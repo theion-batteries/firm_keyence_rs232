@@ -11,16 +11,19 @@ TX3 ------> TxIn
 #define RS232PORT Serial3
 #define USBPORT Serial
 #define BAUDRATE 115200
-#define CR \r //assume carriage return is \r otherwise + \n, \0
-#define LF \n //assume next line or Line Feed used
+#define CR "\r" //assume carriage return is \r otherwise + \n, \0
+#define LF "\n" //assume next line or Line Feed used
 /***** rs232 device commands ****/
 /*
 * the commands must be sent to the device using CR as delimeter, 
 * and the response must be received also with CR.
 * the controller (arduino) must send one command and wait for
 * the response to send next one.
-* General Mode: 
-* Communication Mode: settings changes commands: dispaly switching, tolerance
+* General Mode: During measurement The measurement control commands are accepted.
+Commands such as writing/reading setting values are not accepted
+* Communication Mode: • When the command "Q" "0" "CR" is received, the mode changes to
+the communication mode, and the setting values are written/read.
+• The measurement stops during the communication mode.
 * command | description | Mode | response | ERROR
 --------------------------------------------------------------------------
 * Q0 CR | Changing to the communication mode  | communication |  same as command  | Err-51
@@ -31,9 +34,6 @@ TX3 ------> TxIn
 --------------------------------------------------------------------------
 --------------------------------------------------------------------------
 * MM,010010000000 CR | Measured value output (multiple) 01-12 ex here out2 and out5| General | MM,010010000000,value[,value,value] CR | ERROR
---------------------------------------------------------------------------
-* MA CR | Measured value output (all) 01-12| General | MA,value[,value,value] CR | ERROR
---------------------------------------------------------------------------
 --------------------------------------------------------------------------
 * MA CR | Measured value output (all) 01-12| General | MA,value[,value,value] CR | ERROR
 --------------------------------------------------------------------------
@@ -49,8 +49,17 @@ TX3 ------> TxIn
 • 88: Timeout error
 • 99: Other error
 */
-
-std::map<String, String> commands{{},{},{},{}};
+// Array of Raw Commands
+String RawCommands[5] = {"R0","MS,OUT01","MS,OUT02","MS,OUT03","MM,1110000000000","MA"};
+// map of command Strings to raw commands +CR
+std::map<String, String> commands{
+{"general_mode",RawCommands[0]+CR},
+{"mesure_value_output1",RawCommands[1]+CR},
+{"mesure_value_output2",RawCommands[2]+CR},
+{"mesure_value_output3",RawCommands[3]+CR},
+{"mesure_value_multiple123",RawCommands[4]+CR},
+{"mesure_value_All",RawCommands[5]+CR},
+};
 
 void setup() {
   // put your setup code here, to run once:
