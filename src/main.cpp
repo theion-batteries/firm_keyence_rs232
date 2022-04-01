@@ -1,5 +1,7 @@
 #include <ArduinoSTL.h>
 #include <map>
+#include <string>
+
 /*** layout pins ***/
 /*
 5V  ------> VCC
@@ -7,8 +9,11 @@ GND ------> GND
 RX3 ------> RxOut
 TX3 ------> TxIn 
  */
-
-#define RS232PORT Serial3
+#define UNO
+//define MEGA
+#ifdef MEGA
+#define RS232PORT Serial1
+#endif
 #define USBPORT Serial
 #define BAUDRATE 115200
 #define CR "\r" //assume carriage return is \r otherwise + \n, \0
@@ -50,20 +55,22 @@ the communication mode, and the setting values are written/read.
 • 99: Other error
 */
 // Array of Raw Commands
-String RawCommands[5] = {"R0","MS,OUT01","MS,OUT02","MS,OUT03","MM,1110000000000","MA"};
+String RawCommands[6] = {"R0","MS,OUT01","MS,OUT02","MS,OUT03","MM,1110000000000","MA"};
 // map of command Strings to raw commands +CR
 std::map<String, String> commands{
-{"general_mode",RawCommands[0]+CR},
-{"mesure_value_output1",RawCommands[1]+CR},
-{"mesure_value_output2",RawCommands[2]+CR},
-{"mesure_value_output3",RawCommands[3]+CR},
-{"mesure_value_multiple123",RawCommands[4]+CR},
-{"mesure_value_All",RawCommands[5]+CR},
+{"set_general_mode\n",RawCommands[0]+CR},
+{"mesure_value_output1\n",RawCommands[1]+CR},
+{"mesure_value_output2\n",RawCommands[2]+CR},
+{"mesure_value_output3\n",RawCommands[3]+CR},
+{"mesure_value_multiple123\n",RawCommands[4]+CR},
+{"mesure_value_All\n",RawCommands[5]+CR},
 };
 
 void setup() {
   // put your setup code here, to run once:
+#ifdef MEGA
 RS232PORT.begin(BAUDRATE);
+#endif
 USBPORT.begin(BAUDRATE);
 }
 
@@ -72,8 +79,9 @@ void loop()
   //Declarations
   byte cData[100];
   int nBytesAvail = 0;
-  int nBytes=0;
+  String incomingBytes;
   //check for data from the rs232 port
+#ifdef MEGA
   if((nBytesAvail = RS232PORT.available())>0)
   {
     // Read data from rs232 port
@@ -82,13 +90,25 @@ void loop()
     // write the data to the other port 
     USBPORT.write(cData, nBytes);
   }
+#endif
+
   // check for data from the usb port 
   if (((nBytesAvail = USBPORT.available())>0))
   {
-    // Read data from rs232 port
-    nBytes=USBPORT.readBytes(cData,nBytesAvail);
-
-    // write the data to the usb port 
-    USBPORT.write(cData, nBytes);
+    // Read data from usb port
+    incomingBytes=USBPORT.readString();
+        // find command
+      for (auto it = commands.begin(); it != commands.end(); ++it) 
+      {
+        if((*it).first==incomingBytes)
+        {
+          USBPORT.println("found command String: ");
+          USBPORT.print(incomingBytes);
+          USBPORT.println("command value: ");
+          String value=(*it).second;
+          USBPORT.println(value);
+        }
+      }	
+	 
   }
 }
