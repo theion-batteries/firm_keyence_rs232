@@ -65,7 +65,20 @@ std::map<String, String> commands{
 {"mesure_value_multiple123\n",RawCommands[4]+CR},
 {"mesure_value_All\n",RawCommands[5]+CR},
 };
-
+void findCommand(String& command, std::map<String, String>& CommandMap)
+{
+     for (auto it = CommandMap.begin(); it != CommandMap.end(); ++it) 
+      {
+        if((*it).first==command)
+        {
+          USBPORT.println("found command String: ");
+          USBPORT.print(command);
+          USBPORT.println("command value: ");
+          String value=(*it).second;
+          USBPORT.println(value);
+        }
+      }	
+}
 void setup() {
   // put your setup code here, to run once:
 #ifdef MEGA
@@ -91,24 +104,13 @@ void loop()
     USBPORT.write(cData, nBytes);
   }
 #endif
-
   // check for data from the usb port 
   if (((nBytesAvail = USBPORT.available())>0))
   {
     // Read data from usb port
     incomingBytes=USBPORT.readString();
-        // find command
-      for (auto it = commands.begin(); it != commands.end(); ++it) 
-      {
-        if((*it).first==incomingBytes)
-        {
-          USBPORT.println("found command String: ");
-          USBPORT.print(incomingBytes);
-          USBPORT.println("command value: ");
-          String value=(*it).second;
-          USBPORT.println(value);
-        }
-      }	
-	 
+    USBPORT.println("data received");
+   findCommand(incomingBytes,commands);
   }
 }
+
