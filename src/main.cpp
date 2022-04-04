@@ -9,8 +9,8 @@ GND ------> GND
 RX3 ------> RxOut
 TX3 ------> TxIn 
  */
-#define UNO
-//define MEGA
+//#define UNO
+#define MEGA
 #ifdef MEGA
 #define RS232PORT Serial1
 #endif
@@ -18,6 +18,8 @@ TX3 ------> TxIn
 #define BAUDRATE 115200
 #define CR "\r" //assume carriage return is \r otherwise + \n, \0
 #define LF "\n" //assume next line or Line Feed used
+#define delay_mode 2850
+
 /***** rs232 device commands ****/
 /*
 * the commands must be sent to the device using CR as delimeter, 
@@ -45,6 +47,7 @@ the communication mode, and the setting values are written/read.
 * Timing Diagrams
 * t: time between receiving command and responding: process time
 * Mesrument/control PW: 100ms + number of heads x 100ms : if one head: 200ms if 3 heads 100ms +3*100=400ms
+* Mode Change to General: 600 ms + Number of head expansion units x 750 ms = 600+3*750 = 2850 ms
 * Error Code
 • 50: Command error
 • 51: Status error
@@ -93,24 +96,35 @@ void loop()
   byte cData[100];
   int nBytesAvail = 0;
   String incomingBytes;
-  //check for data from the rs232 port
-#ifdef MEGA
-  if((nBytesAvail = RS232PORT.available())>0)
-  {
-    // Read data from rs232 port
-    nBytes=RS232PORT.readBytes(cData,nBytesAvail);
-
-    // write the data to the other port 
-    USBPORT.write(cData, nBytes);
-  }
-#endif
+  int nBytes;
   // check for data from the usb port 
-  if (((nBytesAvail = USBPORT.available())>0))
+  if (nBytesAvail = USBPORT.available()>0)
   {
     // Read data from usb port
     incomingBytes=USBPORT.readString();
-    USBPORT.println("data received");
-   findCommand(incomingBytes,commands);
+    //nBytes=USBPORT.readBytes(cData, nBytesAvail);
+    // print data
+    USBPORT.println("sending command:");
+    //USBPORT.println(incomingBytes);
+    USBPORT.println(incomingBytes);
+    RS232PORT.print(incomingBytes);
+    //incomingBytes=USBPORT.readString();
+    //USBPORT.println("data received");
+    //findCommand(incomingBytes,commands);
   }
+  // delay need for response
+  //delay(delay_mode);
+  //check for data from the rs232 port
+  #ifdef MEGA
+  if(RS232PORT.available()>0)
+  {
+    USBPORT.println("reading response:");
+    // Read data from rs232 port
+    incomingBytes=RS232PORT.readString();
+    // write the data to the other port 
+    USBPORT.println(incomingBytes);
+  }
+  #endif
+  
 }
 
