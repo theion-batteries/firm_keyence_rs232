@@ -37,7 +37,7 @@ the communication mode, and the setting values are written/read.
 --------------------------------------------------------------------------
 * R0 CR | Changing to the general mode | general | same as command  | ERROR
 --------------------------------------------------------------------------
-* MS,OUT01 CR | Measured value output (single) 01-12 | General | MS,OUT01,value CR | ERROR
+* MS,01 CR | Measured value output (single) 01-12 | General | MS,OUT01,value CR | ERROR
 --------------------------------------------------------------------------
 --------------------------------------------------------------------------
 * MM,010010000000 CR | Measured value output (multiple) 01-12 ex here out2 and out5| General | MM,010010000000,value[,value,value] CR | ERROR
@@ -58,7 +58,7 @@ the communication mode, and the setting values are written/read.
 • 99: Other error
 */
 // Array of Raw Commands
-String RawCommands[6] = {"R0","MS,OUT01","MS,OUT02","MS,OUT03","MM,1110000000000","MA"};
+String RawCommands[6] = {"R0","MS,01","MS,02","MS,03","MM,1110000000000","MA"};
 // map of command Strings to raw commands +CR
 std::map<String, String> commands{
 {"set_general_mode\n",RawCommands[0]+CR},
