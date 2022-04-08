@@ -22,8 +22,22 @@ String Keyence_base::findCommand(String& command, std::map<String, String>& Comm
         }
       }	
 }
-
-
+// print number of heads
+void Keyence_base::printNumHeads() const
+{
+    Serial.println("number of heads counted:");
+    Serial.println(HeadsCount);
+}
+// list heads availble
+void Keyence_base::listUsedHeads() const
+{
+      // For loop using iterators
+    for (std::vector<int>::iterator it = NumUsedHeads.begin(); it != NumUsedHeads.end(); it++)
+    {
+    Serial.println("found saved head number:");
+    Serial.println(*it );
+    }
+}
 // keyence rs232 
 
 //constructor: take a serial handler and baudrate by default defined in config file

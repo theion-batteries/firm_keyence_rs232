@@ -19,7 +19,9 @@
 void setup() {
   USBPORT.begin(BAUDRATE);
   DS_x.initKeyenceCom();
+  DS_x.listUsedHeads();
 }
 void loop() { 
   DS_x.getCurrentDistance();
+  delay(500); // delay for next mesurement for test
 }

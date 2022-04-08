@@ -84,6 +84,10 @@ std::vector<int> NumUsedHeads;
 int HeadsCount=0;
 // helper func to debug commands
 String findCommand(String& command, std::map<String, String>& CommandMap);
+// print number of heads
+void printNumHeads() const; 
+// list heads availble
+void listUsedHeads() const;
 // pure virtual methods: must be defined in sub classes
 //get a output value of single head
 virtual double getValueSingleOutputHead(int output_head_Nr)=0;
