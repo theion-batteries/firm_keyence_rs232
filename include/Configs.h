@@ -15,6 +15,9 @@
 //#define DEBUG_ALIGN
 //#define MICRO // define this to switch to micrometers
 #define DEBUG
+#define USBPORT Serial
+#define BAUDRATE 115200
+
 //#define COMMUNICATION
 //#define TEST
 //#define RELEASE
@@ -65,7 +68,6 @@
 #define LB_Z 48
 // safety
 #define E_Emergency A12
-#define BAUDRATE 115200
 /*********** Distance sensors *********/
 //define which distance sensor is used: uncomment the wrong one
 //#define hc_sr04

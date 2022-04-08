@@ -20,8 +20,9 @@ DistanceSensor::DistanceSensor(int EchoPin, int TrigPin){
 }
 #endif
 #ifdef keyence
-DistanceSensor::DistanceSensor(int OutputHeadNumber)
+DistanceSensor::DistanceSensor(int OutputHeadNumber):Keyence_rs232_interface(KEYENCE_SERIAL_HANDLER,KEYENCE_SERIAL_BAUDRATE)
 {
+
 this->HeadNum=OutputHeadNumber;
 NumUsedHeads.insert(&HeadsCount,HeadNum);   
 HeadsCount++;

@@ -49,7 +49,7 @@ void Keyence_rs232_interface::initKeyenceCom()
 serialHandler->begin(baudrate);
 }
 
-//get a output value of single head: head number format is 01,02,03...
+//get a output value of single head: head number format is 01,02,03... but param is given as int 1,2,3...
 double Keyence_rs232_interface::getValueSingleOutputHead(int output_head_Nr)
 {
   if(serialHandler->available()>0)
@@ -57,6 +57,7 @@ double Keyence_rs232_interface::getValueSingleOutputHead(int output_head_Nr)
     //write the get value command
     String command="mesure_value_outputN";
     String cmd=findCommand(command,commands);
+    if (output_head_Nr<9){String(output_head_Nr)="0"+String(output_head_Nr);}
     cmd+=String(output_head_Nr);
     serialHandler->print(cmd+CR);
     // Read data from rs232 port

@@ -11,7 +11,7 @@
 #pragma once
 #include "Configs.h"
 #include "Keyence_API.h"
-class DistanceSensor:Keyence_rs232_interface
+class DistanceSensor:public Keyence_rs232_interface
 {
     public:
     int Pin;
