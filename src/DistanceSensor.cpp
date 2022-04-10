@@ -20,18 +20,18 @@ DistanceSensor::DistanceSensor(int EchoPin, int TrigPin){
 }
 #endif
 #ifdef keyence
-DistanceSensor::DistanceSensor(int OutputHeadNumber):Keyence_rs232_interface(KEYENCE_SERIAL_HANDLER,KEYENCE_SERIAL_BAUDRATE)
+DistanceSensor::DistanceSensor(int OutputHeadNumber)
 {
 
 this->HeadNum=OutputHeadNumber;
-NumUsedHeads.insert(&HeadsCount,HeadNum);   
-HeadsCount++;
+
+
 }
 
 void DistanceSensor::setKeyenceCom()
 {
-    initKeyenceCom();
-    setGeneralMode();
+    IkeyenceRS233->initKeyenceCom();
+    IkeyenceRS233->setGeneralMode();
 }
 
 #endif
@@ -59,7 +59,7 @@ double DistanceSensor::getCurrentDistance()
     #endif
     /******* get values from keyence *********/
     #ifdef keyence //how to read with keyence
-    return currentDistance=getValueSingleOutputHead(HeadNum);
+    return currentDistance=IkeyenceRS233->getValueSingleOutputHead(this->HeadNum);
     #endif
 }
 void DistanceSensor::printDistance(float val)

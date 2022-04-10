@@ -11,7 +11,7 @@
 #pragma once
 #include "Configs.h"
 #include "Keyence_API.h"
-class DistanceSensor:public Keyence_rs232_interface
+class DistanceSensor
 {
     public:
     int Pin;
@@ -23,6 +23,7 @@ class DistanceSensor:public Keyence_rs232_interface
     DistanceSensor(int EchoPin, int TrigPin);
     #endif
     #ifdef keyence
+    Keyence_rs232_interface* IkeyenceRS233 = new Keyence_rs232_interface(KEYENCE_SERIAL_HANDLER,KEYENCE_SERIAL_BAUDRATE);
     int HeadNum;
     DistanceSensor(int OutputHeadNumber);
     void setKeyenceCom();

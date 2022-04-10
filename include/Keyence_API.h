@@ -78,16 +78,18 @@ std::map<String, String> commands{
 {"mesure_value_multipleN",RawCommands[7]},
 {"mesure_value_All",RawCommands[8]},
 };
+// constructor holds number of heads
+Keyence_base(int head);
 // storing number of heads for n number of heads
-std::vector<int> NumUsedHeads;
+static std::vector<int> NumUsedHeads;
 // this counter get incremented by instance: every instance is new head
-int HeadsCount=0;
+static int HeadsCount;
 // helper func to debug commands
 String findCommand(String& command, std::map<String, String>& CommandMap);
 // print number of heads
-void printNumHeads() const; 
+static void printNumHeads(); 
 // list heads availble
-void listUsedHeads() const;
+static void listUsedHeads();
 // pure virtual methods: must be defined in sub classes
 //get a output value of single head
 virtual double getValueSingleOutputHead(int output_head_Nr)=0;
@@ -106,8 +108,8 @@ virtual void setCommunicationMode()=0;
 class Keyence_rs232_interface:public Keyence_base
 {
 public:
-HardwareSerial* serialHandler;
-unsigned long baudrate;
+ HardwareSerial* serialHandler;
+ unsigned long baudrate;
 Keyence_rs232_interface(HardwareSerial& serHandler=KEYENCE_SERIAL_HANDLER, unsigned long baud=KEYENCE_SERIAL_BAUDRATE);
 void setSerialHandler(HardwareSerial& serHandler); 
 void setSerialBaudrate(unsigned long baud); 

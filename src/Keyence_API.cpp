@@ -11,6 +11,13 @@
 #include "Keyence_API.h"
 
 //keyence base class 
+// constructor update static variables
+Keyence_base::Keyence_base(int head)
+{
+NumUsedHeads.insert(NumUsedHeads.begin()+HeadsCount,head);   //insert
+HeadsCount++;
+}
+
 // helper method to retrieve commands from map
 String Keyence_base::findCommand(String& command, std::map<String, String>& CommandMap)
 {
@@ -23,18 +30,18 @@ String Keyence_base::findCommand(String& command, std::map<String, String>& Comm
       }	
 }
 // print number of heads
-void Keyence_base::printNumHeads() const
+void Keyence_base::printNumHeads()
 {
     Serial.println("number of heads counted:");
     Serial.println(HeadsCount);
 }
 // list heads availble
-void Keyence_base::listUsedHeads() const
+void Keyence_base::listUsedHeads()
 {
       // For loop using iterators
     for (std::vector<int>::iterator it = NumUsedHeads.begin(); it != NumUsedHeads.end(); it++)
     {
-    Serial.println("found saved head number:");
+    Serial.println("iterating and printing heads number:");
     Serial.println(*it );
     }
 }
@@ -49,7 +56,7 @@ Keyence_rs232_interface::Keyence_rs232_interface(HardwareSerial& serHandler=KEYE
 // if the serial handler is changed dynamicly
 void Keyence_rs232_interface::setSerialHandler(HardwareSerial& serHandler)
 {
-    this->serialHandler=&serHandler;
+  this->serialHandler=&serHandler;
 }
 // if baudrate is changed dynamicly
 void Keyence_rs232_interface::setSerialBaudrate(unsigned long baud)
