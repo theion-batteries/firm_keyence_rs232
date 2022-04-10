@@ -11,13 +11,27 @@
 #include "Keyence_API.h"
 
 //keyence base class 
-// constructor update static variables
-Keyence_base::Keyence_base(int head)
-{
-NumUsedHeads.insert(NumUsedHeads.begin()+HeadsCount,head);   //insert
-HeadsCount++;
-}
+////define keyence static variables
+int Keyence_base::HeadsCount=0;
+std::vector<int> Keyence_base::NumUsedHeads;
+int Keyence_base::HeadsArray[12];
 
+// list heads availble
+void Keyence_base::listHeads()
+{
+    Serial.println("listing heads in vcontainer");
+      // For loop using iterators
+    if(!NumUsedHeads.empty())
+    {
+      for (std::vector<int>::iterator it = NumUsedHeads.begin(); it != NumUsedHeads.end(); it++)
+      {
+    Serial.println("next head number:");
+      Serial.println(*it);
+      }
+    }
+    else Serial.println("empty heads container");
+}
+//commands section
 // helper method to retrieve commands from map
 String Keyence_base::findCommand(String& command, std::map<String, String>& CommandMap)
 {
@@ -29,29 +43,15 @@ String Keyence_base::findCommand(String& command, std::map<String, String>& Comm
         }
       }	
 }
-// print number of heads
-void Keyence_base::printNumHeads()
-{
-    Serial.println("number of heads counted:");
-    Serial.println(HeadsCount);
-}
-// list heads availble
-void Keyence_base::listUsedHeads()
-{
-      // For loop using iterators
-    for (std::vector<int>::iterator it = NumUsedHeads.begin(); it != NumUsedHeads.end(); it++)
-    {
-    Serial.println("iterating and printing heads number:");
-    Serial.println(*it );
-    }
-}
+
 // keyence rs232 
 
 //constructor: take a serial handler and baudrate by default defined in config file
-Keyence_rs232_interface::Keyence_rs232_interface(HardwareSerial& serHandler=KEYENCE_SERIAL_HANDLER, unsigned long baud=KEYENCE_SERIAL_BAUDRATE, int Outhead=0):Keyence_base(Outhead)
+Keyence_rs232_interface::Keyence_rs232_interface(HardwareSerial& serHandler=KEYENCE_SERIAL_HANDLER, unsigned long baud=KEYENCE_SERIAL_BAUDRATE)
 {
   this->serialHandler=&serHandler;
   this->baudrate=baud;
+
 }
 // if the serial handler is changed dynamicly
 void Keyence_rs232_interface::setSerialHandler(HardwareSerial& serHandler)
@@ -248,5 +248,3 @@ void Keyence_rs232_interface::setCommunicationMode()
   }
 }
 
-int Keyence_base::HeadsCount=0;
-std::vector<int> Keyence_base::NumUsedHeads;

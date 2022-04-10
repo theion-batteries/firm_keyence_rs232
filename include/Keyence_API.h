@@ -60,7 +60,7 @@ the communication mode, and the setting values are written/read.
 • 99: Other error
 */
 // Note: not all commands were included, only basic cmds to get mesured values
-//abstract class keyence base
+//abstract class keyence base: interface
 class Keyence_base
 {
 public:
@@ -78,19 +78,18 @@ std::map<String, String> commands{
 {"mesure_value_multipleN",RawCommands[7]},
 {"mesure_value_All",RawCommands[8]},
 };
-Keyence_base();
-// constructor holds number of heads
-Keyence_base(int head);
+
 // storing number of heads for n number of heads
 static std::vector<int> NumUsedHeads;
 // this counter get incremented by instance: every instance is new head
 static int HeadsCount;
+// test array
+static int HeadsArray[12];
 // helper func to debug commands
 String findCommand(String& command, std::map<String, String>& CommandMap);
-// print number of heads
-static void printNumHeads(); 
 // list heads availble
-static void listUsedHeads();
+static void listHeads();
+
 // pure virtual methods: must be defined in sub classes
 //get a output value of single head
 virtual double getValueSingleOutputHead(int output_head_Nr)=0;
@@ -103,6 +102,32 @@ virtual void setGeneralMode()=0;
 // set communication mode
 virtual void setCommunicationMode()=0;
 
+//usefull template fucntions
+    template<typename T>
+    static void printVectorElements(std::vector<T> &vec)
+    {
+        for (auto i = 0; i < vec.size(); ++i)
+    {
+            Serial.println(vec.at(i)) ;
+        }
+    }
+    template<typename A>
+    static void printArrayElements(A& array)
+    {
+        for (const auto& element: array)
+    {
+        Serial.println("listing heads in array");
+        Serial.println(element) ;
+        }
+    }
+    template<typename A, typename V>
+    static void transformArrayToVector(A& array, std::vector<V>& vector )
+    {
+        for (const auto& element: array)
+    {
+            vector.push_back(element);
+        }
+    }
 };
 
 // inherited class for rs232 interface: Arduino Framework
@@ -111,8 +136,7 @@ class Keyence_rs232_interface:public Keyence_base
 public:
  HardwareSerial* serialHandler;
  unsigned long baudrate;
- int thisOuthead;
-Keyence_rs232_interface(HardwareSerial& serHandler, unsigned long baud, int head);
+Keyence_rs232_interface(HardwareSerial& serHandler, unsigned long baud);
 void setSerialHandler(HardwareSerial& serHandler); 
 void setSerialBaudrate(unsigned long baud); 
 void initKeyenceCom();

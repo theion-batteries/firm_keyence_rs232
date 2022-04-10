@@ -20,18 +20,21 @@ DistanceSensor::DistanceSensor(int EchoPin, int TrigPin){
 }
 #endif
 #ifdef keyence
+
+// conctructor distance sensor generic keyence
 DistanceSensor::DistanceSensor(int OutputHeadNumber)
 {
- IkeyenceRS232 = new Keyence_rs232_interface(KEYENCE_SERIAL_HANDLER,KEYENCE_SERIAL_BAUDRATE,OutputHeadNumber);
 this->HeadNum=OutputHeadNumber;
-
-
+//Keyence_base::NumUsedHeads.insert(Keyence_base::NumUsedHeads.begin()+Keyence_base::HeadsCount,OutputHeadNumber);   //insert
+Keyence_base::HeadsArray[Keyence_base::HeadsCount]=OutputHeadNumber;
+Keyence_base::HeadsCount++;
 }
 
 void DistanceSensor::setKeyenceCom()
 {
     IkeyenceRS232->initKeyenceCom();
     IkeyenceRS232->setGeneralMode();
+    Serial.println("Keyence general mode set succefully");
 }
 
 #endif
