@@ -14,7 +14,7 @@
   DistanceSensor DS_x(XSensorHead);
   DistanceSensor DS_y(YSensorHead);
   DistanceSensor DS_z(ZSensorHead);
-  
+
 void setup() {
   Serial.begin(BAUDRATE);
   Serial.println(Keyence_base::NumUsedHeads.size());
