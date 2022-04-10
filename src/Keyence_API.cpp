@@ -10,7 +10,8 @@
 */
 #include "Keyence_API.h"
 
-//keyence base class 
+
+// this counter get incremented by instance: every instance is new head
 // helper method to retrieve commands from map
 String Keyence_base::findCommand(String& command, std::map<String, String>& CommandMap)
 {
@@ -23,14 +24,15 @@ String Keyence_base::findCommand(String& command, std::map<String, String>& Comm
       }	
 }
 // print number of heads
-void Keyence_base::printNumHeads() const
+void Keyence_base::printNumHeads() 
 {
     Serial.println("number of heads counted:");
     Serial.println(HeadsCount);
 }
 // list heads availble
-void Keyence_base::listUsedHeads() const
+void Keyence_base::listUsedHeads() 
 {
+       Serial.println("listing heads");
       // For loop using iterators
     for (std::vector<int>::iterator it = NumUsedHeads.begin(); it != NumUsedHeads.end(); it++)
     {
@@ -240,3 +242,4 @@ void Keyence_rs232_interface::setCommunicationMode()
     #endif
   }
 }
+

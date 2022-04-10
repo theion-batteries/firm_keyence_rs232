@@ -79,15 +79,15 @@ std::map<String, String> commands{
 {"mesure_value_All",RawCommands[8]},
 };
 // storing number of heads for n number of heads
-std::vector<int> NumUsedHeads;
+static std::vector<int> NumUsedHeads;
 // this counter get incremented by instance: every instance is new head
-int HeadsCount=0;
+static int HeadsCount;
 // helper func to debug commands
 String findCommand(String& command, std::map<String, String>& CommandMap);
 // print number of heads
-void printNumHeads() const; 
+static void printNumHeads(); 
 // list heads availble
-void listUsedHeads() const;
+static void listUsedHeads();
 // pure virtual methods: must be defined in sub classes
 //get a output value of single head
 virtual double getValueSingleOutputHead(int output_head_Nr)=0;

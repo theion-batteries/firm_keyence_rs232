@@ -10,7 +10,10 @@
  */
 
 #include "DistanceSensor.hpp"
-
+//static definition
+extern int Keyence_base::HeadsCount=0;
+// storing number of heads for n number of heads
+std::vector<int> Keyence_base::NumUsedHeads;
 // Create Objects 
   DistanceSensor DS_x(XSensorHead);
   DistanceSensor DS_y(YSensorHead);
@@ -19,7 +22,8 @@
 void setup() {
   USBPORT.begin(BAUDRATE);
   DS_x.initKeyenceCom();
-  DS_x.listUsedHeads();
+  Keyence_base::printNumHeads();
+  Keyence_base::listUsedHeads();
 }
 void loop() { 
   DS_x.getCurrentDistance();
