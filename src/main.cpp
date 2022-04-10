@@ -1,7 +1,7 @@
 /**
  * @file main.cpp
  * @author sami dhiab (sami@theion.de)
- * @brief 
+ * @brief test keyence sensor functionality
  * @version 0.1
  * @date 2022-02-11
  * @copyright Copyright (c) 2022
@@ -14,7 +14,9 @@
   DistanceSensor DS_x(XSensorHead);
   DistanceSensor DS_y(YSensorHead);
   DistanceSensor DS_z(ZSensorHead);
-
+// while we can not use inline static in cpp 11
+// we can't define static vector inside class
+// composition is better than inheritance 
 void setup() {
   Serial.begin(BAUDRATE);
   Serial.println(Keyence_base::NumUsedHeads.size());
