@@ -48,7 +48,7 @@ void Keyence_base::listUsedHeads()
 // keyence rs232 
 
 //constructor: take a serial handler and baudrate by default defined in config file
-Keyence_rs232_interface::Keyence_rs232_interface(HardwareSerial& serHandler=KEYENCE_SERIAL_HANDLER, unsigned long baud=KEYENCE_SERIAL_BAUDRATE)
+Keyence_rs232_interface::Keyence_rs232_interface(HardwareSerial& serHandler=KEYENCE_SERIAL_HANDLER, unsigned long baud=KEYENCE_SERIAL_BAUDRATE, int Outhead=0):Keyence_base(Outhead)
 {
   this->serialHandler=&serHandler;
   this->baudrate=baud;
@@ -247,3 +247,6 @@ void Keyence_rs232_interface::setCommunicationMode()
     #endif
   }
 }
+
+int Keyence_base::HeadsCount=0;
+std::vector<int> Keyence_base::NumUsedHeads;

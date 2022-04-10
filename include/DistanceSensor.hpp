@@ -23,7 +23,7 @@ class DistanceSensor
     DistanceSensor(int EchoPin, int TrigPin);
     #endif
     #ifdef keyence
-    Keyence_rs232_interface* IkeyenceRS233 = new Keyence_rs232_interface(KEYENCE_SERIAL_HANDLER,KEYENCE_SERIAL_BAUDRATE);
+    Keyence_rs232_interface* IkeyenceRS232;
     int HeadNum;
     DistanceSensor(int OutputHeadNumber);
     void setKeyenceCom();

@@ -78,6 +78,7 @@ std::map<String, String> commands{
 {"mesure_value_multipleN",RawCommands[7]},
 {"mesure_value_All",RawCommands[8]},
 };
+Keyence_base();
 // constructor holds number of heads
 Keyence_base(int head);
 // storing number of heads for n number of heads
@@ -110,7 +111,8 @@ class Keyence_rs232_interface:public Keyence_base
 public:
  HardwareSerial* serialHandler;
  unsigned long baudrate;
-Keyence_rs232_interface(HardwareSerial& serHandler=KEYENCE_SERIAL_HANDLER, unsigned long baud=KEYENCE_SERIAL_BAUDRATE);
+ int thisOuthead;
+Keyence_rs232_interface(HardwareSerial& serHandler, unsigned long baud, int head);
 void setSerialHandler(HardwareSerial& serHandler); 
 void setSerialBaudrate(unsigned long baud); 
 void initKeyenceCom();
