@@ -16,7 +16,7 @@
   DistanceSensor DS_z(ZSensorHead);
 // while we can not use inline static in cpp 11
 // we can't define static vector inside class
-// composition is better than inheritance 
+// here is composition better than inheritance 
 void setup() {
   Serial.begin(BAUDRATE);
   Keyence_base::listHeads();
@@ -24,10 +24,10 @@ void setup() {
 }
 
 void loop() { 
-  //DS_x.getCurrentDistance();
-  //DS_y.getCurrentDistance();
-  //DS_z.getCurrentDistance();
-  DS_x.IkeyenceRS232->getValueMultipleOutputHead("111000000000");
+  DS_x.getCurrentDistance();
+  DS_y.getCurrentDistance();
+  DS_z.getCurrentDistance();
+  //DS_x.IkeyenceRS232->getValueMultipleOutputHead("111000000000");
   //DS_x.IkeyenceRS232->getValueOutputHeadAll();
   delay(300);
 
